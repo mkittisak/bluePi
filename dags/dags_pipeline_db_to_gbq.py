@@ -9,6 +9,7 @@ from datetime import timedelta
 from Ingestions.packages import get_data_from_db
 from Ingestions.packages import transform_data
 from Ingestions.packages import cleaned_data_to_gbq
+from Ingestions.packages import export_data_to_dataproc_staging
 
 project_id = 'de-exam-kittisak'
 dwh_dataset = 'exam_kittisak'
@@ -65,6 +66,11 @@ unique_data_user_log_gbq = BigQueryOperator(
     allow_large_results=True,
     sql='SELECT DISTINCT * FROM `de-exam-kittisak.exam_kittisak.user_log`')
 
+upload_data_to_dataproc_staging = PythonOperator(
+    task_id = 'upload_data_to_dataproc_staging',
+    python_callable = export_data_to_dataproc_staging.main_run_data_to_dataproc_staging,
+    dag = dag,
+)
 
 end = DummyOperator(
     task_id = 'end',
@@ -74,4 +80,4 @@ end = DummyOperator(
 
 # Dependencies
 start >> get_data_db >> data_transform_to_cleaned_gcs >> upload_data_to_gbq
-upload_data_to_gbq >> [unique_data_users_gbq, unique_data_user_log_gbq] >> end
+upload_data_to_gbq >> [unique_data_users_gbq, unique_data_user_log_gbq] >> upload_data_to_dataproc_staging >> end
