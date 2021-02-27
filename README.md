@@ -6,7 +6,7 @@
 
 ## Installation
 
-Use the package in [airflow]
+Use the package in dags[airflow]
 
 ```python
 import DAG
