@@ -5,6 +5,18 @@
 สิ่งที่ประกอบในdagsจะมีpackages function ต่างๆไว้สำหรับ ETL และจะต่อ Dependencies กันตามtask
 
 ## Installation
+### Install requirements.txt
+A requirements file to install from. This option can replace the packages input or editable input, but either this, the packages option, or the editable option is required.
+
+The input value should be a valid requirements file to install from. It corresponds to the --requirement argument for pip. Any valid value for that argument will be valid for this option.
+
+No special formatting is done with this input, so it won't be treated special. The value recieved from this input will be passed directly to pip.
+
+```python
+pip3 install -r requirements.txt
+```
+
+## Installation
 
 Use the package in dags[airflow]
 
